@@ -3,12 +3,13 @@ using System.Collections;
 
 public class CreateStrokeMatrix : MonoBehaviour {
 
-    private const int NCELLS = 3; // numero de filas y columnas de la matriz en la que se guardarán los datos y en las que se dividirá pantalla
+    private const int NCELLS = 100; // numero de filas y columnas de la matriz en la que se guardarán los datos y en las que se dividirá pantalla
+
+    public int[,] matrix = new int[NCELLS, NCELLS]; // matriz de datos del dibujo
 
     private float cellsWidth = Screen.width / NCELLS; // ancho de cada celda
     private float cellsHeigth = Screen.height / NCELLS; // alto de cada celda
     private int row, column; // coordenadas columna, fila
-    private int[,] matrix = new int[NCELLS, NCELLS]; // matriz de datos del dibujo
     private bool held;
     private Camera cam;
     private Vector3 mousePosition;
@@ -17,6 +18,8 @@ public class CreateStrokeMatrix : MonoBehaviour {
     private Mesh drawMesh;
     private Material mat;
     private Draw drawScript;
+    private ControladorPaneles controladorPanelesScript;
+    private EjemploGuardar ejemploGuardarScript;
 
     private void Start () {
         cam = GetComponent<Camera>();
@@ -24,6 +27,8 @@ public class CreateStrokeMatrix : MonoBehaviour {
         drawMesh = new Mesh();
         mat = new Material(Shader.Find("Sprites/Default"));
         held = false;
+        controladorPanelesScript = GetComponent<ControladorPaneles>();
+        ejemploGuardarScript = GetComponent<EjemploGuardar>();
         InitializeMatrix();
 	
 	}
@@ -52,6 +57,7 @@ public class CreateStrokeMatrix : MonoBehaviour {
     private void CreateDrawObject()
     {
         GameObject drawObject = new GameObject("DrawObject");
+        drawObject.tag = "drawObject";
         MeshFilter mf = drawObject.AddComponent<MeshFilter>();
         mf.mesh = drawMesh;
         MeshRenderer mr = drawObject.AddComponent<MeshRenderer>();
@@ -59,6 +65,34 @@ public class CreateStrokeMatrix : MonoBehaviour {
         drawObject.transform.position = Vector3.forward;
 
         drawMesh = new Mesh();
+
+    }
+
+    public void GuardarMatrizSimbolo()
+    {
+        bool fin = false;
+        switch(ControladorPaneles.contadorSimbolos)
+        {
+            case 1:
+                EjemploGuardar.matrizSimbolo1 = matrix;
+                break;
+            case 2:
+                EjemploGuardar.matrizSimbolo2 = matrix;
+                break;
+            case 3:
+                EjemploGuardar.matrizSimbolo3 = matrix;
+                fin = true;
+                break;
+        }
+        
+        InitializeMatrix();
+        if (fin)
+            ejemploGuardarScript.GuardarPartida();
+        else
+        {
+            controladorPanelesScript.ActivarDibujo(false);
+            controladorPanelesScript.CambiarANombreSimbolo();
+        }
 
     }
 	
@@ -78,12 +112,12 @@ public class CreateStrokeMatrix : MonoBehaviour {
 
             if (!held)
             {
-                prevPosition = cam.ScreenToWorldPoint(Input.mousePosition);
+                prevPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 held = true;
             }
             else
             {
-                endPosition = cam.ScreenToWorldPoint(Input.mousePosition);
+                endPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 drawScript.AddLineSegmentToDrawMesh(drawMesh, prevPosition, endPosition);
                 prevPosition = endPosition;
             }

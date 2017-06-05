@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/Handwriting.unity
+- path: Assets/Scenes/Crear.unity
   isLoaded: 1
   isActive: 1

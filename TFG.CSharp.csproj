@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{5928881F-7CE6-1162-D35E-672A8F444FDB}</ProjectGuid>
+    <ProjectGuid>{9C632AB8-BFA3-DE96-06B9-6867166D6824}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AssemblyName>Assembly-CSharp</AssemblyName>
     <FileAlignment>512</FileAlignment>
@@ -77,8 +77,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\ControladorPaneles.cs" />
     <Compile Include="Assets\Scripts\CreateStrokeMatrix.cs" />
     <Compile Include="Assets\Scripts\Draw.cs" />
+    <Compile Include="Assets\Scripts\EjemploGuardar.cs" />
+    <Compile Include="Assets\Scripts\EjemploLeerFicheros.cs" />
+    <Compile Include="Assets\Scripts\GestorEscenas.cs" />
+    <Compile Include="Assets\Scripts\GestorPersistencia.cs" />
+    <Compile Include="Assets\Scripts\ObjetoJuego.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
