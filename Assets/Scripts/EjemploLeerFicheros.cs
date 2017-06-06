@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EjemploLeerFicheros : MonoBehaviour {
 
@@ -9,38 +10,46 @@ public class EjemploLeerFicheros : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        foreach (string file in System.IO.Directory.GetFiles(Application.persistentDataPath))
-        {
-            if (ficheroAbrir == null) ficheroAbrir = file;
-            Debug.Log(file);
-        }
+
     }
 
-    // Update is called once per frame
-    void Update()
+    public void MostrarPartidas (GameObject botonPartida, GameObject botonPartidaPadre)
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        foreach (string file in System.IO.Directory.GetFiles(Application.persistentDataPath))
         {
-            partida = GestorPersistencia.cargarDatos(ficheroAbrir);
-
-            Debug.Log(partida.nombrePartida);
-            foreach (string nombreSimbolo in partida.nombresSimbolos)
+            if (ficheroAbrir == null)
             {
-                Debug.Log(nombreSimbolo);
+                GameObject partida = Instantiate(botonPartida, botonPartidaPadre.transform);
+                int contadorLetrasRuta = (Application.persistentDataPath + "/").Length;
+                string nombre = file.Remove(0, contadorLetrasRuta); //quita ruta
+                nombre = nombre.Remove(nombre.Length - 4, 4); //quita extensión
+                partida.GetComponentInChildren<Text>().text = nombre;
+                partida.GetComponent<Button>().onClick.AddListener(() => { LeerPartida(file); });
+                Debug.Log(file);
             }
-
-            for (int matriz = 0; matriz < partida.matricesSimbolos.Count; matriz++) {
-                for (int i = 0; i < 100; i++)
-                {
-                    for (int j = 0; j < 100; j++)
-                    {
-                        Debug.Log(partida.matricesSimbolos[matriz][i, j]);
-                    }
-                }
-            }
-
-
         }
 
+    }
+
+    private void LeerPartida(string fichero)
+    {
+        partida = GestorPersistencia.cargarDatos(fichero);
+
+        Debug.Log(partida.nombrePartida);
+        foreach (string nombreSimbolo in partida.nombresSimbolos)
+        {
+            Debug.Log(nombreSimbolo);
+        }
+
+        for (int matriz = 0; matriz < partida.matricesSimbolos.Count; matriz++)
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                for (int j = 0; j < 100; j++)
+                {
+                    Debug.Log(partida.matricesSimbolos[matriz][i, j]);
+                }
+            }
+        }
     }
 }

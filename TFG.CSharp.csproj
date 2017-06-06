@@ -77,6 +77,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\ControladorJugar.cs" />
     <Compile Include="Assets\Scripts\ControladorPaneles.cs" />
     <Compile Include="Assets\Scripts\CreateStrokeMatrix.cs" />
     <Compile Include="Assets\Scripts\Draw.cs" />

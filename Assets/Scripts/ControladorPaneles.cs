@@ -48,13 +48,13 @@ public class ControladorPaneles : MonoBehaviour {
         switch(contadorSimbolos)
         {
             case 1:
-                EjemploGuardar.nombreSimbolo1 = inputNombrePartida.text;
+                EjemploGuardar.nombreSimbolo1 = inputNombreSimbolo.text;
                 break;
             case 2:
-                EjemploGuardar.nombreSimbolo2 = inputNombrePartida.text;
+                EjemploGuardar.nombreSimbolo2 = inputNombreSimbolo.text;
                 break;
             case 3:
-                EjemploGuardar.nombreSimbolo3 = inputNombrePartida.text;
+                EjemploGuardar.nombreSimbolo3 = inputNombreSimbolo.text;
                 break;
         }
         inputNombreSimbolo.gameObject.SetActive(false);
