@@ -10,6 +10,7 @@ public class ControladorPaneles : MonoBehaviour {
     public InputField inputNombrePartida;
     public InputField inputNombreSimbolo;
     public Text textoExplicativoSimbolo;
+    public GameObject areaDibujo;
 
     private CreateStrokeMatrix createStrokeMatrixComponente;
     private Draw drawComponente;
@@ -20,7 +21,7 @@ public class ControladorPaneles : MonoBehaviour {
     {
         panelPartida.SetActive(true);
         panelSimbolo.SetActive(false);
-        createStrokeMatrixComponente = GetComponent<CreateStrokeMatrix>();
+        createStrokeMatrixComponente = areaDibujo.GetComponent<CreateStrokeMatrix>();
         drawComponente = GetComponent<Draw>();
         createStrokeMatrixComponente.enabled = false;
         drawComponente.enabled = false;
@@ -68,11 +69,13 @@ public class ControladorPaneles : MonoBehaviour {
         contadorSimbolos++;
         textoExplicativoSimbolo.text = "Introduce el nombre del símbolo " + contadorSimbolos;
         inputNombreSimbolo.gameObject.SetActive(true);
-        GameObject[] drawGOArray = GameObject.FindGameObjectsWithTag("drawObject");
+        GameObject drawGO = GameObject.FindGameObjectWithTag("drawObject");
+        Destroy(drawGO);
+        /*GameObject[] drawGOArray = GameObject.FindGameObjectsWithTag("drawObject");
         foreach (GameObject dGO in drawGOArray)
         {
             Destroy(dGO);
-        }
+        }*/
         
     }
 }

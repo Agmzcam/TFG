@@ -7,10 +7,11 @@ public class EjemploLeerFicheros : MonoBehaviour {
 
     private string ficheroAbrir;
     private ObjetoJuego partida;
+    private ControladorJugar controladorJugarScript;
 
 	// Use this for initialization
 	void Start () {
-
+        controladorJugarScript = GetComponent<ControladorJugar>();
     }
 
     public void MostrarPartidas (GameObject botonPartida, GameObject botonPartidaPadre)
@@ -25,6 +26,7 @@ public class EjemploLeerFicheros : MonoBehaviour {
                 nombre = nombre.Remove(nombre.Length - 4, 4); //quita extensión
                 partida.GetComponentInChildren<Text>().text = nombre;
                 partida.GetComponent<Button>().onClick.AddListener(() => { LeerPartida(file); });
+                partida.GetComponent<Button>().onClick.AddListener(controladorJugarScript.CambiarAInGame);
                 Debug.Log(file);
             }
         }
@@ -43,9 +45,9 @@ public class EjemploLeerFicheros : MonoBehaviour {
 
         for (int matriz = 0; matriz < partida.matricesSimbolos.Count; matriz++)
         {
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 3; i++)
             {
-                for (int j = 0; j < 100; j++)
+                for (int j = 0; j < 3; j++)
                 {
                     Debug.Log(partida.matricesSimbolos[matriz][i, j]);
                 }

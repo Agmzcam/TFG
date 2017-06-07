@@ -11,17 +11,27 @@ public class ControladorJugar : MonoBehaviour {
     public GameObject partidaBotonPadre;
 
     private EjemploLeerFicheros ejemploLeerFicherosScript;
+    private CreateStrokeMatrix createStrokeMatrixComponente;
+    private Draw drawComponente;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         panelPartidas.SetActive(true);
         panelInGame.SetActive(false);
         ejemploLeerFicherosScript = GetComponent<EjemploLeerFicheros>();
         ejemploLeerFicherosScript.MostrarPartidas(partidaBoton, partidaBotonPadre);
-	}
+        createStrokeMatrixComponente = GetComponent<CreateStrokeMatrix>();
+        drawComponente = GetComponent<Draw>();
+        createStrokeMatrixComponente.enabled = false;
+        drawComponente.enabled = false;
+    }
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    public void CambiarAInGame()
+    {
+        panelInGame.SetActive(true);
+        panelPartidas.SetActive(false);
+        createStrokeMatrixComponente.enabled = true;
+        drawComponente.enabled = true;
+    }
+
 }

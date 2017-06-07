@@ -45,4 +45,11 @@ public class GestorPersistencia {
             return null;
         }
     }
+
+    public static void GuardarPantalla (string nombrePartida, string nombreSimbolo)
+    {
+        int ancho = Screen.width;
+        int alto = Screen.height;
+        Texture2D tex = new Texture2D(ancho, alto, TextureFormat.RGB24, false);
+    }
 }

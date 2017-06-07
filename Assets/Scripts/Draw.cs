@@ -8,11 +8,6 @@ public class Draw : MonoBehaviour {
     private Vector3 a, b, c, d;
     private Vector3 lineDir; //dirección de la línea
     private Vector3 ortogonalLineDir; //vector ortogonal a la línea dibujada
- 
-
-	private void Start () {
-       
-	}
 
     public void CalculateVertexMexh (Vector3 start, Vector3 end)
     {

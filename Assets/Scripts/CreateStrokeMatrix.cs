@@ -3,14 +3,16 @@ using System.Collections;
 
 public class CreateStrokeMatrix : MonoBehaviour {
 
-    private const int NCELLS = 100; // numero de filas y columnas de la matriz en la que se guardarán los datos y en las que se dividirá pantalla
+    private const int NCELLS = 3; // numero de filas y columnas de la matriz en la que se guardarán los datos y en las que se dividirá pantalla
 
     public int[,] matrix = new int[NCELLS, NCELLS]; // matriz de datos del dibujo
+    public GameObject utilidadGuardar;
 
-    private float cellsWidth = Screen.width / NCELLS; // ancho de cada celda
-    private float cellsHeigth = Screen.height / NCELLS; // alto de cada celda
+    private float cellsWidth;
+    private float cellsHeigth;
     private int row, column; // coordenadas columna, fila
     private bool held;
+    private bool dibujar;
     private Camera cam;
     private Vector3 mousePosition;
     private Vector3 prevPosition;
@@ -20,15 +22,21 @@ public class CreateStrokeMatrix : MonoBehaviour {
     private Draw drawScript;
     private ControladorPaneles controladorPanelesScript;
     private EjemploGuardar ejemploGuardarScript;
+    private GameObject dibujo;
 
     private void Start () {
+        cellsWidth = GetComponent<RectTransform>().rect.width/ NCELLS; // ancho de cada celda
+        cellsHeigth = GetComponent<RectTransform>().rect.width / NCELLS; // alto de cada celda
         cam = GetComponent<Camera>();
-        drawScript = GetComponent<Draw>();
+        drawScript = utilidadGuardar.GetComponent<Draw>();
         drawMesh = new Mesh();
         mat = new Material(Shader.Find("Sprites/Default"));
         held = false;
-        controladorPanelesScript = GetComponent<ControladorPaneles>();
-        ejemploGuardarScript = GetComponent<EjemploGuardar>();
+        dibujar = false;
+        controladorPanelesScript = utilidadGuardar.GetComponent<ControladorPaneles>();
+        ejemploGuardarScript = utilidadGuardar.GetComponent<EjemploGuardar>();
+        dibujo = new GameObject("Dibujo");
+        dibujo.tag ="drawObject";
         InitializeMatrix();
 	
 	}
@@ -57,7 +65,8 @@ public class CreateStrokeMatrix : MonoBehaviour {
     private void CreateDrawObject()
     {
         GameObject drawObject = new GameObject("DrawObject");
-        drawObject.tag = "drawObject";
+        //drawObject.tag = "drawObject";
+        drawObject.transform.parent = dibujo.transform;
         MeshFilter mf = drawObject.AddComponent<MeshFilter>();
         mf.mesh = drawMesh;
         MeshRenderer mr = drawObject.AddComponent<MeshRenderer>();
@@ -68,19 +77,31 @@ public class CreateStrokeMatrix : MonoBehaviour {
 
     }
 
+    private void OnMouseEnter()
+    {
+        dibujar = true;
+        print("se puede dibujar");
+    }
+
+   private void OnMouseExit()
+    {
+        dibujar = false;
+        print("no se puede dibujar");
+    }
+
     public void GuardarMatrizSimbolo()
     {
         bool fin = false;
         switch(ControladorPaneles.contadorSimbolos)
         {
             case 1:
-                EjemploGuardar.matrizSimbolo1 = matrix;
+                ejemploGuardarScript.matrizSimbolo1 = matrix;
                 break;
             case 2:
-                EjemploGuardar.matrizSimbolo2 = matrix;
+                ejemploGuardarScript.matrizSimbolo2 = matrix;
                 break;
             case 3:
-                EjemploGuardar.matrizSimbolo3 = matrix;
+                ejemploGuardarScript.matrizSimbolo3 = matrix;
                 fin = true;
                 break;
         }
@@ -95,11 +116,13 @@ public class CreateStrokeMatrix : MonoBehaviour {
         }
 
     }
+
 	
 	private void Update () {
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && dibujar)
         {
+          
             mousePosition = Input.mousePosition;
             row = Mousey2Row(mousePosition.y);
             column = Mousex2Column(mousePosition.x);
@@ -121,7 +144,6 @@ public class CreateStrokeMatrix : MonoBehaviour {
                 drawScript.AddLineSegmentToDrawMesh(drawMesh, prevPosition, endPosition);
                 prevPosition = endPosition;
             }
-                
         }
 
         if (Input.GetMouseButtonUp(0))
