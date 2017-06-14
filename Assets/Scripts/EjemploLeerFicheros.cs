@@ -24,9 +24,8 @@ public class EjemploLeerFicheros : MonoBehaviour {
                 int contadorLetrasRuta = (Application.persistentDataPath + "/").Length;
                 string nombre = file.Remove(0, contadorLetrasRuta); //quita ruta
                 nombre = nombre.Remove(nombre.Length - 4, 4); //quita extensión
-                partida.GetComponentInChildren<Text>().text = nombre;
+                partida.GetComponentInChildren<Text>().text = "-"+ nombre;
                 partida.GetComponent<Button>().onClick.AddListener(() => { LeerPartida(file); });
-                partida.GetComponent<Button>().onClick.AddListener(controladorJugarScript.CambiarAInGame);
                 Debug.Log(file);
             }
         }

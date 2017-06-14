@@ -6,11 +6,15 @@ using UnityEngine.UI;
 public class ControladorPaneles : MonoBehaviour {
 
     public GameObject panelPartida;
+    public GameObject lienzo;
     public GameObject panelSimbolo;
+    public GameObject panelJuego;
     public InputField inputNombrePartida;
     public InputField inputNombreSimbolo;
-    public Text textoExplicativoSimbolo;
-    public GameObject areaDibujo;
+    public Text nombreSimbolo;
+    public Text dibujaSimbolo;
+    public Button validar;
+    public Button descartar;
 
     private CreateStrokeMatrix createStrokeMatrixComponente;
     private Draw drawComponente;
@@ -21,61 +25,84 @@ public class ControladorPaneles : MonoBehaviour {
     {
         panelPartida.SetActive(true);
         panelSimbolo.SetActive(false);
-        createStrokeMatrixComponente = areaDibujo.GetComponent<CreateStrokeMatrix>();
+        panelJuego.SetActive(false);
+        createStrokeMatrixComponente = lienzo.GetComponent<CreateStrokeMatrix>();
         drawComponente = GetComponent<Draw>();
-        createStrokeMatrixComponente.enabled = false;
+        //createStrokeMatrixComponente.enabled = false;
         drawComponente.enabled = false;
         contadorSimbolos = 1;
 
     }
 
-    public void CambiarAPanelSimbolo()
-    {
-        EjemploGuardar.nombre = inputNombrePartida.text;
-        textoExplicativoSimbolo.text = "Introduce el nombre del símbolo " + contadorSimbolos;
-        panelPartida.SetActive(false);
-        panelSimbolo.SetActive(true);
-    }
+    //public void CambiarAPanelSimbolo()
+    //{
+    //    EjemploGuardar.nombre = inputNombrePartida.text;
+    //    textoExplicativoSimbolo.text = "Introduce el nombre del símbolo " + contadorSimbolos;
+    //    panelPartida.SetActive(false);
+    //    panelSimbolo.SetActive(true);
+    //    lienzo.gameObject.SetActive(false);
+    //}
 
     public void ActivarDibujo (bool activar)
     {
         createStrokeMatrixComponente.enabled = activar;
+        lienzo.gameObject.SetActive(true);
         drawComponente.enabled = activar;
     }
 
     public void CambiarADibujarSimbolo()
     {
-        textoExplicativoSimbolo.text = "Dibuja el símbolo " + contadorSimbolos;
-        switch(contadorSimbolos)
+        dibujaSimbolo.gameObject.SetActive(true);
+        nombreSimbolo.gameObject.SetActive(false);
+        validar.gameObject.SetActive(true);
+        descartar.gameObject.SetActive(true);
+        switch(inputNombreSimbolo.name)
         {
-            case 1:
-                EjemploGuardar.nombreSimbolo1 = inputNombreSimbolo.text;
+            case "BolaPapelIzq":
+                EjemploGuardar.simboloBolaPapelIzq = inputNombreSimbolo.text;
                 break;
-            case 2:
-                EjemploGuardar.nombreSimbolo2 = inputNombreSimbolo.text;
+            case "BolaPapelDcha":
+                EjemploGuardar.simboloBolaPapelDcha = inputNombreSimbolo.text;
                 break;
-            case 3:
-                EjemploGuardar.nombreSimbolo3 = inputNombreSimbolo.text;
+            case "Libreta":
+                EjemploGuardar.simboloLibreta = inputNombreSimbolo.text;
                 break;
         }
         inputNombreSimbolo.gameObject.SetActive(false);
 
-        createStrokeMatrixComponente.Invoke("GuardarMatrizSimbolo", 5);
+
+    }
+    public void CambiarAJuego()
+    {
+        panelPartida.SetActive(false);
+        panelSimbolo.SetActive(false);
+        panelJuego.SetActive(true);
 
     }
 
     public void CambiarANombreSimbolo()
     {
-        contadorSimbolos++;
-        textoExplicativoSimbolo.text = "Introduce el nombre del símbolo " + contadorSimbolos;
-        inputNombreSimbolo.gameObject.SetActive(true);
-        GameObject drawGO = GameObject.FindGameObjectWithTag("drawObject");
-        Destroy(drawGO);
+        dibujaSimbolo.gameObject.SetActive(false);
+        nombreSimbolo.gameObject.SetActive(true);
+        panelPartida.SetActive(false);
+        panelSimbolo.SetActive(true);
+        panelJuego.SetActive(false);
+        validar.gameObject.SetActive(false);
+        descartar.gameObject.SetActive(false);
+        //inputNombreSimbolo.gameObject.SetActive(true);
+
+        EliminarTrazo();
         /*GameObject[] drawGOArray = GameObject.FindGameObjectsWithTag("drawObject");
         foreach (GameObject dGO in drawGOArray)
         {
             Destroy(dGO);
         }*/
         
+    }
+
+    public void EliminarTrazo()
+    {
+        GameObject drawGO = GameObject.FindGameObjectWithTag("drawObject");
+        Destroy(drawGO);
     }
 }

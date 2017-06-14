@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 4f4a5a1d585e5ec46a1121a82b70cfb0
+timeCreated: 1497277643
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: DK Sensory Overload
+  fontNames:
+  - DK Sensory Overload
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
