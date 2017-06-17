@@ -18,91 +18,86 @@ public class ControladorPaneles : MonoBehaviour {
 
     private CreateStrokeMatrix createStrokeMatrixComponente;
     private Draw drawComponente;
-    public static int contadorSimbolos;
+    private Button objetoSeleccionado;
 
     // Use this for initialization
     void Start()
     {
-        panelPartida.SetActive(true);
+        panelPartida.SetActive(false);
         panelSimbolo.SetActive(false);
-        panelJuego.SetActive(false);
+        panelJuego.SetActive(true);
         createStrokeMatrixComponente = lienzo.GetComponent<CreateStrokeMatrix>();
         drawComponente = GetComponent<Draw>();
-        //createStrokeMatrixComponente.enabled = false;
         drawComponente.enabled = false;
-        contadorSimbolos = 1;
 
     }
-
-    //public void CambiarAPanelSimbolo()
-    //{
-    //    EjemploGuardar.nombre = inputNombrePartida.text;
-    //    textoExplicativoSimbolo.text = "Introduce el nombre del símbolo " + contadorSimbolos;
-    //    panelPartida.SetActive(false);
-    //    panelSimbolo.SetActive(true);
-    //    lienzo.gameObject.SetActive(false);
-    //}
 
     public void ActivarDibujo (bool activar)
     {
         createStrokeMatrixComponente.enabled = activar;
-        lienzo.gameObject.SetActive(true);
         drawComponente.enabled = activar;
-    }
+        if (activar)
+        {
+            createStrokeMatrixComponente.CrearDibujoGO();
+        }
+
+}
 
     public void CambiarADibujarSimbolo()
     {
         dibujaSimbolo.gameObject.SetActive(true);
         nombreSimbolo.gameObject.SetActive(false);
+        ActivarDibujo(true);
         validar.gameObject.SetActive(true);
         descartar.gameObject.SetActive(true);
-        switch(inputNombreSimbolo.name)
-        {
-            case "BolaPapelIzq":
-                EjemploGuardar.simboloBolaPapelIzq = inputNombreSimbolo.text;
-                break;
-            case "BolaPapelDcha":
-                EjemploGuardar.simboloBolaPapelDcha = inputNombreSimbolo.text;
-                break;
-            case "Libreta":
-                EjemploGuardar.simboloLibreta = inputNombreSimbolo.text;
-                break;
-        }
         inputNombreSimbolo.gameObject.SetActive(false);
-
-
     }
+
     public void CambiarAJuego()
     {
         panelPartida.SetActive(false);
         panelSimbolo.SetActive(false);
         panelJuego.SetActive(true);
+        ActivarDibujo(false);
 
     }
 
-    public void CambiarANombreSimbolo()
+    public void CambiarANombreSimbolo(Button b)
     {
-        dibujaSimbolo.gameObject.SetActive(false);
-        nombreSimbolo.gameObject.SetActive(true);
         panelPartida.SetActive(false);
         panelSimbolo.SetActive(true);
         panelJuego.SetActive(false);
+        inputNombreSimbolo.gameObject.SetActive(true);
+        dibujaSimbolo.gameObject.SetActive(false);
+        nombreSimbolo.gameObject.SetActive(true);
+        ActivarDibujo(false);
         validar.gameObject.SetActive(false);
         descartar.gameObject.SetActive(false);
-        //inputNombreSimbolo.gameObject.SetActive(true);
-
-        EliminarTrazo();
-        /*GameObject[] drawGOArray = GameObject.FindGameObjectsWithTag("drawObject");
-        foreach (GameObject dGO in drawGOArray)
-        {
-            Destroy(dGO);
-        }*/
+        objetoSeleccionado = b;
         
+    }
+
+    public void CambiarANombrePartida()
+    {
+        panelPartida.SetActive(true);
+        panelSimbolo.SetActive(false);
+        panelJuego.SetActive(false);
     }
 
     public void EliminarTrazo()
     {
         GameObject drawGO = GameObject.FindGameObjectWithTag("drawObject");
         Destroy(drawGO);
+    }
+
+    public void Validar()
+    {
+        createStrokeMatrixComponente.GuardarSimbolo(inputNombreSimbolo.text, objetoSeleccionado.name);
+        EliminarTrazo();
+    }
+
+    public void GuardarPartida()
+    {
+        createStrokeMatrixComponente.GuardarPartida(inputNombrePartida.text);
     }
 }

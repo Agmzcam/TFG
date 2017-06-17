@@ -16,6 +16,7 @@ public class CreateStrokeMatrix : MonoBehaviour, IPointerEnterHandler, IPointerE
     private int row, column; // coordenadas columna, fila
     private bool held;
     private bool dibujar;
+    private bool hayTrazo;
     private Camera cam;
     private Vector3 mousePosition;
     private Vector3 prevPosition;
@@ -27,6 +28,7 @@ public class CreateStrokeMatrix : MonoBehaviour, IPointerEnterHandler, IPointerE
     private EjemploGuardar ejemploGuardarScript;
     private GameObject dibujo;
 
+
     private void Start () {
         lienzoRectTransform = GetComponent<RectTransform>();
         cellsWidth = lienzoRectTransform.rect.width / NCELLS; // ancho de cada celda
@@ -37,10 +39,9 @@ public class CreateStrokeMatrix : MonoBehaviour, IPointerEnterHandler, IPointerE
         mat = new Material(Shader.Find("Sprites/Default"));
         held = false;
         dibujar = false;
+        hayTrazo = false;
 
-        dibujo = new GameObject("Dibujo");
-        dibujo.tag ="drawObject";
-        dibujo.layer = 8;
+
         InitializeMatrix();
 	
 	}
@@ -84,9 +85,15 @@ public class CreateStrokeMatrix : MonoBehaviour, IPointerEnterHandler, IPointerE
         MeshRenderer mr = drawObject.AddComponent<MeshRenderer>();
         mr.material = mat;
         drawObject.transform.position = Vector3.forward;
-
         drawMesh = new Mesh();
+        hayTrazo = false;
+    }
 
+    public void CrearDibujoGO()
+    {
+        dibujo = new GameObject("Dibujo");
+        dibujo.tag = "drawObject";
+        dibujo.layer = 8;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -99,46 +106,28 @@ public class CreateStrokeMatrix : MonoBehaviour, IPointerEnterHandler, IPointerE
         dibujar = false;
     }
 
-    public void GuardarMatrizSimbolo()
+    public void GuardarSimbolo(string nSimbolo, string nGOSeleccionado)
     {
-        controladorPanelesScript = utilidadGuardar.GetComponent<ControladorPaneles>();
         ejemploGuardarScript = utilidadGuardar.GetComponent<EjemploGuardar>();
-        bool fin = false;
-        switch(ControladorPaneles.contadorSimbolos)
-        {
-            case 1:
-                ejemploGuardarScript.matrizSimbolo1 = matrix;
-                break;
-            case 2:
-                ejemploGuardarScript.matrizSimbolo2 = matrix;
-                break;
-            case 3:
-                ejemploGuardarScript.matrizSimbolo3 = matrix;
-                fin = true;
-                break;
-        }
-        
+        int[,] mS = ejemploGuardarScript.SetMatriz(matrix);
+        ejemploGuardarScript.GuardarSimbolo(nSimbolo, mS, nGOSeleccionado);
         InitializeMatrix();
-        if (fin)
-            ejemploGuardarScript.GuardarPartida();
-        else
-        {
-            controladorPanelesScript.ActivarDibujo(false);
-            controladorPanelesScript.CambiarANombreSimbolo();
-        }
-
     }
-
-	
+    
+    public void GuardarPartida(string nombre)
+    {
+        ejemploGuardarScript.GuardarPartida(nombre);
+    }	
 	private void Update () {
 
         if (Input.GetMouseButton(0) && dibujar)
         {
-          
+
+            hayTrazo = true;
             mousePosition = Input.mousePosition;
             row = Mousey2Row(mousePosition.y);
             column = Mousex2Column(mousePosition.x);
-            Debug.Log("Y = " + mousePosition.y + "--> " + row + " X = " + mousePosition.x + "--> " + column);
+            //Debug.Log("Y = " + mousePosition.y + "--> " + row + " X = " + mousePosition.x + "--> " + column);
 
             if (matrix[row, column] == 0)
             {
@@ -161,7 +150,8 @@ public class CreateStrokeMatrix : MonoBehaviour, IPointerEnterHandler, IPointerE
         if (Input.GetMouseButtonUp(0))
         {
             held = false;
-            CreateDrawObject();
+            if (hayTrazo)
+                CreateDrawObject();
         }
 
         Graphics.DrawMesh(drawMesh, Vector3.forward, Quaternion.identity, mat, 0);

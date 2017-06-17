@@ -4,22 +4,39 @@ using UnityEngine;
 
 public class EjemploGuardar : MonoBehaviour {
 
-    public int[,] matrizSimbolo1 = new int[3, 3];
-    public int[,] matrizSimbolo2 = new int[3, 3];
-    public int[,] matrizSimbolo3 = new int[3, 3];
 
-    public static string nombre;
-    public static string simboloBolaPapelIzq;
-    public static string simboloBolaPapelDcha;
-    public static string simboloLibreta;
+    private ObjetoJuego miPartida = new ObjetoJuego();
+    //private int[,] mSimbolo = new int[3, 3];
 
-    public void GuardarPartida()
+    /* public static string nombre;
+     public static string simboloBolaPapelIzq;
+     public static string simboloBolaPapelDcha;
+     public static string simboloLibreta;*/
+
+    public void GuardarPartida(string nombre)
     {
-        ObjetoJuego miPartida = new ObjetoJuego(nombre);
-        miPartida.setPartida(simboloBolaPapelIzq, matrizSimbolo1);
-        miPartida.setPartida(simboloBolaPapelDcha, matrizSimbolo2);
-        miPartida.setPartida(simboloLibreta, matrizSimbolo3);
-        miPartida.guardarPartida();
+        miPartida.guardarPartida(nombre);
+
+    }
+
+    public void GuardarSimbolo(string nSimbolo, int[,] matrizSimbolo, string nGO)
+    {
+        miPartida.setPartida(nSimbolo, matrizSimbolo, nGO);
+    }
+
+    public int[,] SetMatriz(int[,] m)
+    {
+        int[,] mSimbolo = new int[m.GetLength(0), m.GetLength(1)];
+        for (int i = 0; i < m.GetLength(0); i++)
+        {
+            for (int j = 0; j < m.GetLength(1); j++)
+            {
+                mSimbolo[i, j] = m[i, j];
+            }
+
+        }
+
+        return mSimbolo;
 
     }
 }
