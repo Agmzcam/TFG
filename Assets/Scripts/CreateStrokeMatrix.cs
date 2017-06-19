@@ -5,7 +5,7 @@ using System;
 
 public class CreateStrokeMatrix : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
 
-    private const int NCELLS = 3; // numero de filas y columnas de la matriz en la que se guardarán los datos y en las que se dividirá pantalla
+    private const int NCELLS = 10; // numero de filas y columnas de la matriz en la que se guardarán los datos y en las que se dividirá pantalla
 
     public int[,] matrix = new int[NCELLS, NCELLS]; // matriz de datos del dibujo
     public GameObject utilidadGuardar;
@@ -61,23 +61,25 @@ public class CreateStrokeMatrix : MonoBehaviour, IPointerEnterHandler, IPointerE
     {
         float origenX = lienzoRectTransform.offsetMin.x;
         //print("offsetMin: " + lienzoRectTransform.offsetMin);
-        return (int)((coorX - origenX) / cellsWidth);
+        double v = (coorX - origenX) / cellsWidth;
+        return (int)Math.Truncate(v);
     }
 
     private int Mousey2Row (float coorY)
     {
-        float origenY = -lienzoRectTransform.offsetMin.y;
+        float origenY = -lienzoRectTransform.offsetMax.y;
         //print("origen y: " + origenY);
         float coorY2 = Screen.height - coorY;
-        double v = (coorY2 + origenY) / cellsHeigth;
-        return (int)v;
-        //return Math.Truncate(v);
+        double v = (coorY2 - origenY) / cellsHeigth;
+        //print("v: " + v);
+        //return (int)v;
+       // print("truncate: " + (int)Math.Truncate(v));
+        return (int)Math.Truncate(v);
     }
 
     private void CreateDrawObject()
     {
         GameObject drawObject = new GameObject("DrawObject");
-        //drawObject.tag = "drawObject";
         drawObject.layer = 8;
         drawObject.transform.parent = dibujo.transform;
         MeshFilter mf = drawObject.AddComponent<MeshFilter>();
@@ -127,7 +129,7 @@ public class CreateStrokeMatrix : MonoBehaviour, IPointerEnterHandler, IPointerE
             mousePosition = Input.mousePosition;
             row = Mousey2Row(mousePosition.y);
             column = Mousex2Column(mousePosition.x);
-            //Debug.Log("Y = " + mousePosition.y + "--> " + row + " X = " + mousePosition.x + "--> " + column);
+            Debug.Log(" X = " + mousePosition.x + "--> " + column + " Y = " + mousePosition.y + "--> " + row);
 
             if (matrix[row, column] == 0)
             {

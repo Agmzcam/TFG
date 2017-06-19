@@ -9,12 +9,14 @@ public class ControladorPaneles : MonoBehaviour {
     public GameObject lienzo;
     public GameObject panelSimbolo;
     public GameObject panelJuego;
+    public GameObject imagenLienzo; //imagen de papel
     public InputField inputNombrePartida;
     public InputField inputNombreSimbolo;
     public Text nombreSimbolo;
     public Text dibujaSimbolo;
     public Button validar;
     public Button descartar;
+    
 
     private CreateStrokeMatrix createStrokeMatrixComponente;
     private Draw drawComponente;
@@ -26,6 +28,7 @@ public class ControladorPaneles : MonoBehaviour {
         panelPartida.SetActive(false);
         panelSimbolo.SetActive(false);
         panelJuego.SetActive(true);
+        imagenLienzo.SetActive(false);
         createStrokeMatrixComponente = lienzo.GetComponent<CreateStrokeMatrix>();
         drawComponente = GetComponent<Draw>();
         drawComponente.enabled = false;
@@ -47,6 +50,7 @@ public class ControladorPaneles : MonoBehaviour {
     {
         dibujaSimbolo.gameObject.SetActive(true);
         nombreSimbolo.gameObject.SetActive(false);
+        imagenLienzo.SetActive(true);
         ActivarDibujo(true);
         validar.gameObject.SetActive(true);
         descartar.gameObject.SetActive(true);
@@ -58,6 +62,7 @@ public class ControladorPaneles : MonoBehaviour {
         panelPartida.SetActive(false);
         panelSimbolo.SetActive(false);
         panelJuego.SetActive(true);
+        imagenLienzo.SetActive(false);
         ActivarDibujo(false);
 
     }
@@ -67,6 +72,7 @@ public class ControladorPaneles : MonoBehaviour {
         panelPartida.SetActive(false);
         panelSimbolo.SetActive(true);
         panelJuego.SetActive(false);
+        imagenLienzo.SetActive(true);
         inputNombreSimbolo.gameObject.SetActive(true);
         dibujaSimbolo.gameObject.SetActive(false);
         nombreSimbolo.gameObject.SetActive(true);
