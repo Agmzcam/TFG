@@ -8,18 +8,16 @@ public class ObjetoJuego {
     public string nombrePartida;
     public List<string> nombresSimbolos = new List<string>();
     public List<int[,]> matricesSimbolos = new List<int[,]>();
-    public List<string> nombresGO = new List<string>();
 
     /*public ObjetoJuego(string nPartida)
     {
         nombrePartida = nPartida;
     }*/
 
-    public void setPartida(string nSimbolo, int[,] matrizSimbolo, string nGO)
+    public void setPartida(string nSimbolo, int[,] matrizSimbolo)
     {
         nombresSimbolos.Add(nSimbolo);
         matricesSimbolos.Add(matrizSimbolo);
-        nombresGO.Add(nGO);
     }
 
     public void guardarPartida(string nombre)

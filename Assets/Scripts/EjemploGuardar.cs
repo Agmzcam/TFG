@@ -19,9 +19,9 @@ public class EjemploGuardar : MonoBehaviour {
 
     }
 
-    public void GuardarSimbolo(string nSimbolo, int[,] matrizSimbolo, string nGO)
+    public void GuardarSimbolo(string nSimbolo, int[,] matrizSimbolo)
     {
-        miPartida.setPartida(nSimbolo, matrizSimbolo, nGO);
+        miPartida.setPartida(nSimbolo, matrizSimbolo);
     }
 
     public int[,] SetMatriz(int[,] m)

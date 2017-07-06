@@ -40,8 +40,6 @@ public class CreateStrokeMatrix : MonoBehaviour, IPointerEnterHandler, IPointerE
         held = false;
         dibujar = false;
         hayTrazo = false;
-
-
         InitializeMatrix();
 	
 	}
@@ -108,11 +106,11 @@ public class CreateStrokeMatrix : MonoBehaviour, IPointerEnterHandler, IPointerE
         dibujar = false;
     }
 
-    public void GuardarSimbolo(string nSimbolo, string nGOSeleccionado)
+    public void GuardarSimbolo(string nSimbolo)
     {
         ejemploGuardarScript = utilidadGuardar.GetComponent<EjemploGuardar>();
         int[,] mS = ejemploGuardarScript.SetMatriz(matrix);
-        ejemploGuardarScript.GuardarSimbolo(nSimbolo, mS, nGOSeleccionado);
+        ejemploGuardarScript.GuardarSimbolo(nSimbolo, mS);
         InitializeMatrix();
     }
     
@@ -129,7 +127,7 @@ public class CreateStrokeMatrix : MonoBehaviour, IPointerEnterHandler, IPointerE
             mousePosition = Input.mousePosition;
             row = Mousey2Row(mousePosition.y);
             column = Mousex2Column(mousePosition.x);
-            Debug.Log(" X = " + mousePosition.x + "--> " + column + " Y = " + mousePosition.y + "--> " + row);
+            //Debug.Log(" X = " + mousePosition.x + "--> " + column + " Y = " + mousePosition.y + "--> " + row);
 
             if (matrix[row, column] == 0)
             {
