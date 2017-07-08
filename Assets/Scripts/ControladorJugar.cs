@@ -21,6 +21,7 @@ public class ControladorJugar : MonoBehaviour {
     private Draw drawComponente;
     private List<ObjetoSimbolo> simbolos;
     private int[,] matrizCorrecta;
+    private int celdas = 10;
 
     void Start () {
         panelPartidas.SetActive(true);
@@ -36,6 +37,7 @@ public class ControladorJugar : MonoBehaviour {
         drawComponente.enabled = false;
         imagenLienzo.SetActive(false);
         simbolos = new List<ObjetoSimbolo>();
+        
     }
 
     public void CargarPartida(string fich)
@@ -85,7 +87,85 @@ public class ControladorJugar : MonoBehaviour {
 
     public void ComprobarDibujo()
     {
-        
+        int[,] m = new int[celdas, celdas];
+        for (int f = 0; f < celdas; f++)
+        {
+            for (int c = 0; c < celdas; c++)
+            {
+                m[f, c] = createStrokeMatrixComponente.matrix[f, c];
+            }
+        }
+        print("comprobando dibujo");
+        float aciertos = CalcularPorcentajeAciertos(m);
+        if (aciertos > 90)
+        {
+            print("es correcto");
+            createStrokeMatrixComponente.ResetMatriz();
+        }
+    }
+
+    public float CalcularPorcentajeAciertos (int [,] matrizJugador)
+    {
+        print("calculando porcentaje de aciertos");
+        float porcentajeMaximoAciertos = 0;
+        string nombreSimboloCercano = "";
+        float aciertosActuales;
+        for (int matriz = 0; matriz < simbolos.Count; matriz++)
+        {
+            aciertosActuales = SumaAciertosMultiplicacion(matrizJugador, simbolos[matriz].matriz);
+            if (aciertosActuales > porcentajeMaximoAciertos)
+            {
+                porcentajeMaximoAciertos = aciertosActuales;
+                nombreSimboloCercano = simbolos[matriz].nombre;
+                print("porcentaje maximo de aciertos: " + porcentajeMaximoAciertos);
+                print("por ahora se acerca más a símbolo: " + nombreSimboloCercano);
+            }
+           
+        }
+
+        return porcentajeMaximoAciertos;
+    }
+
+    public float SumaAciertosMultiplicacion(int[,]m1, int[,]m2)
+    {
+        print("en sumaaciertos multiplicacion");
+        int[,] multiplicacion = new int[celdas, celdas];
+        int columna = 0;
+        int resultado = 0;
+        int f = 0;
+        float aciertos = 0;
+        while (f < celdas)
+        {
+            for (int c = 0; c < celdas; c++)
+            {
+                resultado += m1[f, c] * m2[c, columna];
+            }
+            multiplicacion[f, columna] = resultado;
+            resultado = 0;
+            if (columna == celdas-1)
+            {
+                columna = 0;
+                f++;
+            }
+            else
+            {
+                columna += 1;
+            }
+
+        }
+       
+        for (int fi = 0; fi < celdas; fi++)
+        {
+            for (int c = 0; c < celdas; c++)
+            {
+                if (multiplicacion[fi, c] != 1)
+                {
+                    aciertos += multiplicacion[fi,c];
+                }
+                    
+            }
+        }
+        return aciertos;
     }
 
 }

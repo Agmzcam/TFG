@@ -5,7 +5,7 @@ using System;
 
 public class CreateStrokeMatrix : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
 
-    private const int NCELLS = 10; // numero de filas y columnas de la matriz en la que se guardarán los datos y en las que se dividirá pantalla
+    public const int NCELLS = 10; // numero de filas y columnas de la matriz en la que se guardarán los datos y en las que se dividirá pantalla
 
     public int[,] matrix = new int[NCELLS, NCELLS]; // matriz de datos del dibujo
     public GameObject utilidadGuardar;
@@ -117,6 +117,10 @@ public class CreateStrokeMatrix : MonoBehaviour, IPointerEnterHandler, IPointerE
     public void GuardarPartida(string nombre)
     {
         ejemploGuardarScript.GuardarPartida(nombre);
+    }
+    public void ResetMatriz()
+    {
+        InitializeMatrix();
     }	
 	private void Update () {
 

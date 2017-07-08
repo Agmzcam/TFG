@@ -8,6 +8,7 @@ public class EjemploLeerFicheros : MonoBehaviour {
     private string ficheroAbrir;
     private ObjetoJuego partida;
     private ControladorJugar controladorJugarScript;
+    private int celdas = 10;
 
 	// Use this for initialization
 	void Start () {
@@ -39,10 +40,10 @@ public class EjemploLeerFicheros : MonoBehaviour {
         Debug.Log(partida.nombrePartida);
         for (int simbolo = 0; simbolo < partida.nombresSimbolos.Count; simbolo++)
         {
-            int[,] m = new int[10,10];
-            for (int i = 0; i < 10; i++)
+            int[,] m = new int[celdas, celdas];
+            for (int i = 0; i < celdas; i++)
             {
-                for (int j = 0; j < 10; j++)
+                for (int j = 0; j < celdas; j++)
                 {
                     m[i, j] = partida.matricesSimbolos[simbolo][i, j];
                 }
