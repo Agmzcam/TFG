@@ -22,7 +22,7 @@ public class CreateStrokeMatrix : MonoBehaviour, IPointerEnterHandler, IPointerE
     private Vector3 prevPosition;
     private Vector3 endPosition;
     private Mesh drawMesh;
-    private Material mat;
+    public Material mat;
     private Draw drawScript;
     private ControladorPaneles controladorPanelesScript;
     private EjemploGuardar ejemploGuardarScript;
@@ -36,7 +36,7 @@ public class CreateStrokeMatrix : MonoBehaviour, IPointerEnterHandler, IPointerE
         cam = GetComponent<Camera>();
         drawScript = utilidadGuardar.GetComponent<Draw>();
         drawMesh = new Mesh();
-        mat = new Material(Shader.Find("Sprites/Default"));
+        //mat = new Material(Shader.Find("Sprites/Default"));
         held = false;
         dibujar = false;
         hayTrazo = false;

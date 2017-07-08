@@ -25,32 +25,58 @@ public class EjemploLeerFicheros : MonoBehaviour {
                 string nombre = file.Remove(0, contadorLetrasRuta); //quita ruta
                 nombre = nombre.Remove(nombre.Length - 4, 4); //quita extensión
                 partida.GetComponentInChildren<Text>().text = "-"+ nombre;
-                partida.GetComponent<Button>().onClick.AddListener(() => { LeerPartida(file); });
+                partida.GetComponent<Button>().onClick.AddListener(() => { controladorJugarScript.CargarPartida(file); });
                 Debug.Log(file);
             }
         }
 
     }
 
-    private void LeerPartida(string fichero)
+    public List<ObjetoSimbolo> LeerPartida(string fichero) // llamar desde controlador jugar, la lista será después de sprites
     {
         partida = GestorPersistencia.cargarDatos(fichero);
-
+        List<ObjetoSimbolo> listaSimbolos = new List<ObjetoSimbolo>();
         Debug.Log(partida.nombrePartida);
-        foreach (string nombreSimbolo in partida.nombresSimbolos)
+        for (int simbolo = 0; simbolo < partida.nombresSimbolos.Count; simbolo++)
         {
-            Debug.Log(nombreSimbolo);
-        }
-
-        for (int matriz = 0; matriz < partida.matricesSimbolos.Count; matriz++)
-        {
-            for (int i = 0; i < 3; i++)
+            int[,] m = new int[10,10];
+            for (int i = 0; i < 10; i++)
             {
-                for (int j = 0; j < 3; j++)
+                for (int j = 0; j < 10; j++)
+                {
+                    m[i, j] = partida.matricesSimbolos[simbolo][i, j];
+                }
+            }
+            ObjetoSimbolo obS = new ObjetoSimbolo(partida.nombresSimbolos[simbolo], m);
+            listaSimbolos.Add(obS);
+        }
+        return listaSimbolos;
+        
+        /*foreach (string nombreSimbolo in partida.nombresSimbolos)
+        {
+            int[,] m;
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 10; j++)
+                {
+                    m[i,j] = partida.matricesSimbolos[]
+                }
+            }
+            ObjetoSimbolo obS = new ObjetoSimbolo();
+            listaNombreSimbolos.Add(nombreSimbolo);
+            //Debug.Log(nombreSimbolo);
+        }/*
+        return listaNombreSimbolos;
+
+        /*for (int matriz = 0; matriz < partida.matricesSimbolos.Count; matriz++)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 10; j++)
                 {
                     Debug.Log(partida.matricesSimbolos[matriz][i, j]);
                 }
             }
-        }
+        }*/
     }
 }

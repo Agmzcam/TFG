@@ -86,6 +86,7 @@
     <Compile Include="Assets\Scripts\GestorEscenas.cs" />
     <Compile Include="Assets\Scripts\GestorPersistencia.cs" />
     <Compile Include="Assets\Scripts\ObjetoJuego.cs" />
+    <Compile Include="Assets\Scripts\ObjetoSimbolo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
