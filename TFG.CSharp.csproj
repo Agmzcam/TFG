@@ -77,6 +77,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\AbrirObjetosCerrados.cs" />
+    <Compile Include="Assets\Scripts\ClickClave.cs" />
+    <Compile Include="Assets\Scripts\ClickEnRejilla.cs" />
+    <Compile Include="Assets\Scripts\ClickEnTablet.cs" />
+    <Compile Include="Assets\Scripts\ClickInterruptor.cs" />
+    <Compile Include="Assets\Scripts\ClickenPistaPostit.cs" />
+    <Compile Include="Assets\Scripts\ControlCamara.cs" />
     <Compile Include="Assets\Scripts\ControladorJugar.cs" />
     <Compile Include="Assets\Scripts\ControladorPaneles.cs" />
     <Compile Include="Assets\Scripts\CreateStrokeMatrix.cs" />
@@ -87,6 +94,12 @@
     <Compile Include="Assets\Scripts\GestorPersistencia.cs" />
     <Compile Include="Assets\Scripts\ObjetoJuego.cs" />
     <Compile Include="Assets\Scripts\ObjetoSimbolo.cs" />
+    <Compile Include="Assets\Scripts\cerrarPostit.cs" />
+    <Compile Include="Assets\Scripts\clickEnLocker.cs" />
+    <Compile Include="Assets\Scripts\clickTaquilla.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Locker\Shaders\VIS_BumpSpec.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

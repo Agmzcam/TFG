@@ -1,0 +1,154 @@
+fileFormatVersion: 2
+guid: 365655405ff7e5b4485712ff52acd776
+timeCreated: 1499596250
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: chincheta
+    100004: chincheta001
+    100006: chincheta002
+    100008: chincheta003
+    100010: habitacion
+    100012: interruptor
+    100014: mesa
+    100016: "pesta\xF1aInt"
+    100018: picaporte
+    100020: posit
+    100022: posit001
+    100024: posit002
+    100026: posit003
+    100028: tablet
+    100030: tablon
+    400000: //RootNode
+    400002: chincheta
+    400004: chincheta001
+    400006: chincheta002
+    400008: chincheta003
+    400010: habitacion
+    400012: interruptor
+    400014: mesa
+    400016: "pesta\xF1aInt"
+    400018: picaporte
+    400020: posit
+    400022: posit001
+    400024: posit002
+    400026: posit003
+    400028: tablet
+    400030: tablon
+    2300000: chincheta
+    2300002: chincheta001
+    2300004: chincheta002
+    2300006: chincheta003
+    2300008: habitacion
+    2300010: interruptor
+    2300012: mesa
+    2300014: "pesta\xF1aInt"
+    2300016: picaporte
+    2300018: posit
+    2300020: posit001
+    2300022: posit002
+    2300024: posit003
+    2300026: tablet
+    2300028: tablon
+    3300000: chincheta
+    3300002: chincheta001
+    3300004: chincheta002
+    3300006: chincheta003
+    3300008: habitacion
+    3300010: interruptor
+    3300012: mesa
+    3300014: "pesta\xF1aInt"
+    3300016: picaporte
+    3300018: posit
+    3300020: posit001
+    3300022: posit002
+    3300024: posit003
+    3300026: tablet
+    3300028: tablon
+    4300000: habitacion
+    4300002: picaporte
+    4300004: mesa
+    4300006: tablon
+    4300008: chincheta
+    4300010: posit
+    4300012: posit001
+    4300014: chincheta001
+    4300016: posit002
+    4300018: chincheta002
+    4300020: posit003
+    4300022: chincheta003
+    4300024: interruptor
+    4300026: "pesta\xF1aInt"
+    4300028: tablet
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

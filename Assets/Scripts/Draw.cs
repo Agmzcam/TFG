@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Draw : MonoBehaviour {
 
-    private float thickness = 0.1f; //grosor de la línea
+    private float thickness = 0.2f; //grosor de la línea
     private Vector3 a, b, c, d;
     private Vector3 lineDir; //dirección de la línea
     private Vector3 ortogonalLineDir; //vector ortogonal a la línea dibujada

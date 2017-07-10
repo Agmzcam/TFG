@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Diagnostics;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,26 +7,45 @@ using UnityEngine.UI;
 public class ControladorJugar : MonoBehaviour {
 
     public GameObject panelPartidas;
-    public GameObject panelInGame;
     public GameObject partidaBoton;
     public GameObject partidaBotonPadre;
+    public GameObject panelNegro;
     public GameObject lienzo;
     public GameObject pistaPostit;
     public GameObject pistaLibro;
     public GameObject pistaBola;
+    public GameObject papel;
     public List<Text> textSimbolos;
-    public GameObject imagenLienzo;
+    public Camera cam;
+    public Camera mainCamara;
+    public Button validar;
+    public Button descartar;
+    public bool taquillaAbierta = false;
+    public bool tengoDestornillador = false;
+    public Text tiempoText;
 
     private EjemploLeerFicheros ejemploLeerFicherosScript;
     private CreateStrokeMatrix createStrokeMatrixComponente;
     private Draw drawComponente;
     private List<ObjetoSimbolo> simbolos;
+    private ControlCamara controladorCamaraScript;
     private int[,] matrizCorrecta;
     private int celdas = 10;
+    private int threshold = 72;
+    private int aciertosTaquilla = 0;
+    private int aciertosTablet = 0;
+    private int aciertosPuerta = 0;
+    private Text pista;
+    private GameObject claveActual;
+    private AbrirObjetosCerrados abrirObjetosCerradosScript;
+    private Stopwatch time;
+
+
 
     void Start () {
+        time = new Stopwatch();
         panelPartidas.SetActive(true);
-        panelInGame.SetActive(false);
+        panelNegro.SetActive(true);
         pistaBola.SetActive(false);
         pistaLibro.SetActive(false);
         pistaPostit.SetActive(false);
@@ -35,16 +55,20 @@ public class ControladorJugar : MonoBehaviour {
         drawComponente = GetComponent<Draw>();
         createStrokeMatrixComponente.enabled = false;
         drawComponente.enabled = false;
-        imagenLienzo.SetActive(false);
         simbolos = new List<ObjetoSimbolo>();
-        
+        controladorCamaraScript = cam.GetComponent<ControlCamara>();
+        controladorCamaraScript.enabled = false;
+        validar.gameObject.SetActive(false);
+        descartar.gameObject.SetActive(false);
+        abrirObjetosCerradosScript = GetComponent<AbrirObjetosCerrados>();
     }
 
     public void CargarPartida(string fich)
     {
-        pistaLibro.SetActive(true);
+        time.Start();
+        papel.SetActive(false);
+        panelNegro.SetActive(false);
         panelPartidas.SetActive(false);
-        panelInGame.SetActive(true);
         simbolos = ejemploLeerFicherosScript.LeerPartida(fich);
         List<string> nombreSimbolos = new List<string>();
         foreach (ObjetoSimbolo s in simbolos)
@@ -56,6 +80,8 @@ public class ControladorJugar : MonoBehaviour {
         {
             textSimbolos[i].text = listaSimbolosAleatrorizada[i];
         }
+        controladorCamaraScript.enabled = true;
+
     }
 
     private List<string> AleatorizarSimbolos(List<string> nombres) //luego serán sprites
@@ -71,18 +97,34 @@ public class ControladorJugar : MonoBehaviour {
         return nombres;
     }
 
-    public void IntroducirClave (Button objeto)
+    public void IntroducirClave (GameObject clave)
     {
-        Sprite clave = objeto.GetComponentInChildren<SpriteRenderer>().sprite; //imágenes de la clave
-        GameObject pista = GameObject.Find(clave.name); // buscar la pista que tiene esa imagen
+        //Sprite clave = objeto.GetComponentInChildren<SpriteRenderer>().sprite; //imágenes de la clave  
+        //GameObject pista = GameObject.Find(clave.name); // buscar la pista que tiene esa imagen
+        claveActual = clave;
+        cam.enabled = false;
+        mainCamara.enabled = true;
+        ClickClave.clickEnClave = false;
+        papel.SetActive(true);
+        pista = textSimbolos.Find(no => no.name == clave.name);
         string n = pista.GetComponentInChildren<Text>().text;
+        print("el símbolo correcto es el que está en " + pista.name + "y es " + n);
+        print("simbolo correcto " + n);
         matrizCorrecta = simbolos.Find(s => s.nombre == n).matriz;
-        panelInGame.SetActive(false);
         lienzo.SetActive(true);
         drawComponente.enabled = true;
         createStrokeMatrixComponente.enabled = true;
         createStrokeMatrixComponente.CrearDibujoGO();
-        imagenLienzo.SetActive(true);
+        validar.gameObject.SetActive(true);
+        descartar.gameObject.SetActive(false);
+    }
+
+    private void ActivarCamaraMundo()
+    {
+        cam.enabled = true;
+        mainCamara.enabled = false;
+        validar.gameObject.SetActive(false);
+        lienzo.SetActive(false);
     }
 
     public void ComprobarDibujo()
@@ -95,13 +137,95 @@ public class ControladorJugar : MonoBehaviour {
                 m[f, c] = createStrokeMatrixComponente.matrix[f, c];
             }
         }
-        print("comprobando dibujo");
-        float aciertos = CalcularPorcentajeAciertos(m);
-        if (aciertos > 90)
+        
+        //float aciertos = CalcularPorcentajeAciertos(m);
+        float aciertos = CalcularPorcentaje(m);
+        print("aciertos: " + aciertos);
+        if (aciertos >= threshold)
         {
             print("es correcto");
-            createStrokeMatrixComponente.ResetMatriz();
+            print(claveActual.name);
+            SpriteRenderer claSR = claveActual.GetComponent<SpriteRenderer>();
+            claSR.color = Color.green;
+            AddAciertos();
         }
+        else
+        {
+            print("no es correcto");
+        }
+        createStrokeMatrixComponente.ResetMatriz();
+        EliminarTrazo();
+        ActivarCamaraMundo();
+        ClickClave.clickEnClave = false;
+    }
+
+    private void AddAciertos()
+    {
+        switch(claveActual.name)
+        {
+            case "diap3":
+                aciertosTablet += 1;
+                break;
+            case "rec1":
+                aciertosTablet += 1;
+                break;
+            case "rec2":
+                aciertosTablet += 1;
+                break;
+            case "dia3":
+                aciertosTablet += 1;
+                break;
+            case "diap1":
+                aciertosTaquilla += 1;
+                break;
+            case "rec3":
+                aciertosTaquilla += 1;
+                break;
+            case "rec4":
+                aciertosPuerta += 1;
+                break;
+            case "diap2":
+                aciertosPuerta += 1;
+                break;
+            case "diap4":
+                aciertosPuerta += 1;
+                break;
+            case "dia2":
+                aciertosPuerta += 1;
+                break;
+            case "dia4":
+                aciertosPuerta += 1;
+                break;
+            case "dia1":
+                aciertosPuerta += 1;
+                break;
+        }
+        ComprobarAbrirObjeto();
+    }
+
+    private void ComprobarAbrirObjeto()
+    {
+        print("comprobando abrir objetos");
+        if (aciertosPuerta == 6)
+        {
+            time.Stop();
+            string tiempo = time.Elapsed.ToString();
+            tiempoText.text = "HAS CONSEGUIDO SALIR EN " + tiempo;
+        }
+        else if (aciertosTablet == 4)
+        {
+            abrirObjetosCerradosScript.ActivarClavePuerta();
+        }
+        else if (aciertosTaquilla == 2)
+        {
+            taquillaAbierta = true;
+            abrirObjetosCerradosScript.AbrirTaquilla();
+        }
+    }
+
+    private float CalcularPorcentaje (int[,] matrizJugador)
+    {
+        return Coincidencias(matrizJugador, matrizCorrecta);
     }
 
     public float CalcularPorcentajeAciertos (int [,] matrizJugador)
@@ -112,7 +236,9 @@ public class ControladorJugar : MonoBehaviour {
         float aciertosActuales;
         for (int matriz = 0; matriz < simbolos.Count; matriz++)
         {
-            aciertosActuales = SumaAciertosMultiplicacion(matrizJugador, simbolos[matriz].matriz);
+            //aciertosActuales = SumaAciertosMultiplicacion(matrizJugador, simbolos[matriz].matriz);
+            aciertosActuales = Coincidencias(matrizJugador, simbolos[matriz].matriz);
+            print("aciertos con " + simbolos[matriz].nombre + " " + aciertosActuales);
             if (aciertosActuales > porcentajeMaximoAciertos)
             {
                 porcentajeMaximoAciertos = aciertosActuales;
@@ -124,6 +250,20 @@ public class ControladorJugar : MonoBehaviour {
         }
 
         return porcentajeMaximoAciertos;
+    }
+
+    private float Coincidencias(int[,] m1, int[,] m2)
+    {
+        float aciertos = 0;
+        for (int f = 0; f < celdas; f++)
+        {
+            for (int c = 0; c < celdas; c++)
+            {
+                if (m1[f, c] == m2[f, c])
+                    aciertos += 1;
+            }
+        }
+        return aciertos * 100/(celdas* celdas);
     }
 
     public float SumaAciertosMultiplicacion(int[,]m1, int[,]m2)
@@ -158,7 +298,7 @@ public class ControladorJugar : MonoBehaviour {
         {
             for (int c = 0; c < celdas; c++)
             {
-                if (multiplicacion[fi, c] != 1)
+                if (multiplicacion[fi, c] != 0)
                 {
                     aciertos += multiplicacion[fi,c];
                 }
@@ -166,6 +306,25 @@ public class ControladorJugar : MonoBehaviour {
             }
         }
         return aciertos;
+    }
+
+
+    public void Borrar()
+    {
+        EliminarTrazo();
+        createStrokeMatrixComponente.CrearDibujoGO();
+    }
+
+    public void EliminarTrazo()
+    {
+        GameObject drawGO = GameObject.FindGameObjectWithTag("drawObject");
+        if (drawGO)
+            Destroy(drawGO);
+    }
+
+    public void CogerDestornillador()
+    {
+        tengoDestornillador = true;
     }
 
 }
